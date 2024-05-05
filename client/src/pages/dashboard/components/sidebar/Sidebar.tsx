@@ -1,34 +1,32 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./style.scss";
-import { Group, Code } from "@mantine/core";
+import { Group } from "@mantine/core";
 import {
-  IconBellRinging,
-  IconFingerprint,
-  IconKey,
   IconSettings,
-  Icon2fa,
-  IconDatabaseImport,
-  IconReceipt2,
-  IconSwitchHorizontal,
-  IconDashboard,
   IconLogout,
+  IconWallet,
+  IconUserCheck,
+  IconBriefcase,
+  IconUsers,
+  IconLayoutGrid,
+  IconCalendarEvent,
 } from "@tabler/icons-react";
 
 interface Props {
-  // children: React.ReactNode;
+  children: React.ReactNode;
 }
 
-export const Sidebar: React.FC<Props> = () => {
+const Sidebar: React.FC<Props> = ({ children }) => {
   const [active, setActive] = useState("Dashboard");
 
   const navigation = [
-    { link: "", label: "Dashboard", icon: IconDashboard },
-    { link: "", label: "Job Desk", icon: IconReceipt2 },
-    { link: "", label: "Emloyee", icon: IconFingerprint },
-    { link: "", label: "Leave", icon: IconKey },
-    { link: "", label: "Attendance", icon: IconDatabaseImport },
-    { link: "", label: "Payroll", icon: Icon2fa },
+    { link: "", label: "Dashboard", icon: IconLayoutGrid },
+    { link: "", label: "Job Desk", icon: IconBriefcase },
+    { link: "", label: "Emloyee", icon: IconUsers },
+    { link: "", label: "Leave", icon: IconCalendarEvent },
+    { link: "", label: "Attendance", icon: IconUserCheck },
+    { link: "", label: "Payroll", icon: IconWallet },
     { link: "", label: "Settings", icon: IconSettings },
   ];
 
@@ -49,8 +47,8 @@ export const Sidebar: React.FC<Props> = () => {
   ));
 
   return (
-    <div>
-      <nav className={"navbar"}>
+    <div className="flex relative w-[100%] h-[100%]">
+      <nav className={"navbar bg-[#fff] overflow-hidden"}>
         <div className={"navbarMain"}>
           <Group className={"header"} justify="space-between">
             <Link to={""} className="text-gray-400">
@@ -61,12 +59,18 @@ export const Sidebar: React.FC<Props> = () => {
         </div>
 
         <div className={"footer"}>
-          <div>
+          <div className="link">
             <IconLogout className={"linkIcon"} stroke={1.5} />
             <span>Logout</span>
           </div>
         </div>
       </nav>
+
+      <section className="w-[100%] bg-[#f8f9fa] overflow-y-scroll p-[1rem]">
+        {children}
+      </section>
     </div>
   );
 };
+
+export default Sidebar;
