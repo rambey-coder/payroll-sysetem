@@ -15,7 +15,7 @@ import {
   IconArrowUpRight,
   IconArrowDownRight,
 } from "@tabler/icons-react";
-import { WorkHourStat } from "./components";
+import { RecentPayrollHistory, WorkHourStat } from "./components";
 
 export const Dashboard = () => {
   const quickActionList = [
@@ -108,7 +108,7 @@ export const Dashboard = () => {
           </div>
 
           <div className="w-[200px]">
-            <img src={`${BaseDir.SVG_DIR}/amico.svg`} alt="" width={"100%"} />
+            <img src={`${BaseDir.IMAGE_DIR}/image.png`} alt="" width={"100%"} />
           </div>
         </div>
 
@@ -142,8 +142,13 @@ export const Dashboard = () => {
       <div className={"root"}>
         <SimpleGrid cols={{ base: 1, xs: 2, md: 4 }}>{stats}</SimpleGrid>
       </div>
-
       {/* cards end */}
+
+      {/* recent payroll */}
+      <div className="bg-white p-4 rounded-lg">
+        <RecentPayrollHistory />
+      </div>
+      {/* recent payroll end */}
     </div>
   );
 };
