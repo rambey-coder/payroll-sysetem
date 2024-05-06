@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "@mantine/form";
 import { PrimaryButton, TxtInput } from "../../../components";
+import { useSignUpMutation } from "../../../store/auth";
+import { errorHandler } from "../../../utils/errorHandler";
 
 export const SignUp = () => {
+  const [signUp, { data, isError, isLoading, isSuccess }] = useSignUpMutation();
+
   const form = useForm({
     mode: "uncontrolled",
     initialValues: {
@@ -18,8 +22,7 @@ export const SignUp = () => {
     validate: {
       first_name: (value) =>
         value.length > 1 ? null : "First name is required",
-      last_name: (value) =>
-        value.length > 1 ? null : "Last name is required",
+      last_name: (value) => (value.length > 1 ? null : "Last name is required"),
       email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
       phone_number: (value) =>
         value.length > 10 ? null : "Phone number is required",
@@ -27,10 +30,30 @@ export const SignUp = () => {
         value.length > 5
           ? null
           : "Password should contain at least 6 characters",
-      confirmPassword: (value) =>
-        value === form.values.password ? null : "Passwords do not match",
+      confirmPassword: (value, form) =>
+        value === form.password ? null : "Passwords do not match",
     },
   });
+
+  useEffect(() => {
+    if (isSuccess) {
+      console.log('sks');
+      
+      errorHandler({
+        isSuccess: isSuccess,
+        isError: isError,
+        message: "Account created successfully",
+      });
+    } else if (isError) {
+      errorHandler({
+        isSuccess: isSuccess,
+        isError: isError,
+        message: "An error occurred",
+      });
+    }
+  }, [isSuccess, data, isError]);
+
+  console.log("err", isError, "load", isLoading, "succ", isSuccess, data);
 
   return (
     <div className="bg-[#e9ecef] h-[100vh] w-100 flex items-center justify-center">
@@ -42,13 +65,19 @@ export const SignUp = () => {
           Welcome to HCM Payroll Solution System. Please enter your details to
           create an account.
         </p>
-        <form className="mt-4" 
-          onSubmit={form.onSubmit((values) => {
+        <form
+          className="mt-4"
+          onSubmit={form.onSubmit(async (values) => {
             form.validate();
             const isValid = form.isValid();
-            if (isValid) console.log(values);
-          })}
-        >
+            if (isValid) {
+              try {
+                await signUp(values);
+              } catch (error) {
+                console.log("error", error);
+              }
+            }
+          })}>
           <div className="my-4 flex items-center justify-between gap-4">
             <TxtInput
               label="First Name"

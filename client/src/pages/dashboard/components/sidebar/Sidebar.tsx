@@ -47,8 +47,8 @@ const Sidebar: React.FC<Props> = ({ children }) => {
   ));
 
   return (
-    <div className="flex relative w-[100%] h-[100%]">
-      <nav className={"navbar bg-[#fff] overflow-hidden"}>
+    <div className="flex relative w-[100%] h-[100vh]">
+      <nav className={"navbar bg-[#fff] overflow-y-hidden"}>
         <div className={"navbarMain"}>
           <Group className={"header"} justify="space-between">
             <Link to={""} className="text-gray-400">
