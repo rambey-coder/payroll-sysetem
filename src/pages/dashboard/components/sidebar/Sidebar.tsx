@@ -21,24 +21,22 @@ const Sidebar: React.FC<Props> = ({ children }) => {
   const [active, setActive] = useState("Dashboard");
 
   const navigation = [
-    { link: "", label: "Dashboard", icon: IconLayoutGrid },
-    { link: "", label: "Job Desk", icon: IconBriefcase },
-    { link: "", label: "Emloyee", icon: IconUsers },
-    { link: "", label: "Leave", icon: IconCalendarEvent },
-    { link: "", label: "Attendance", icon: IconUserCheck },
-    { link: "", label: "Payroll", icon: IconWallet },
-    { link: "", label: "Settings", icon: IconSettings },
+    { link: "/dashboard/overview", label: "Dashboard", icon: IconLayoutGrid },
+    { link: "/dashboard/job-desk", label: "Job Desk", icon: IconBriefcase },
+    { link: "/dashboard/employee", label: "Employee", icon: IconUsers },
+    { link: "/dashboard/leave", label: "Leave", icon: IconCalendarEvent },
+    { link: "/dashboard/attendance", label: "Attendance", icon: IconUserCheck },
+    { link: "/dashboard/payroll", label: "Payroll", icon: IconWallet },
+    { link: "/dashboard/settings", label: "Settings", icon: IconSettings },
   ];
 
-  const navLinks = navigation.map((item) => (
+  const navLinks = navigation.map((item, i) => (
     <Link
       className={"link"}
       data-active={item.label === active || undefined}
       to={item.link}
-      key={item.label}
-      onClick={(event) => {
-        event.preventDefault();
-        event.stopPropagation();
+      key={i}
+      onClick={() => {
         setActive(item.label);
       }}>
       <item.icon className={"linkIcon"} stroke={1.5} />

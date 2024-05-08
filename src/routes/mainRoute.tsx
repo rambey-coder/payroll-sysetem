@@ -3,7 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import ScrollToTop from "./ScrollToTop";
 import "@mantine/core/styles.css";
 import { MantineProvider } from "@mantine/core";
-import { Dashboard, SignIn, SignUp } from "../pages";
+import { Attendance, Dashboard, SignIn, SignUp } from "../pages";
 import { Auth } from "./auth";
 
 export const MainRoute = () => {
@@ -17,6 +17,7 @@ export const MainRoute = () => {
           {/* protected route */}
           <Route path="/dashboard/*" element={<Auth />}>
             <Route path="overview" element={<Dashboard />} />
+            <Route path="attendance" element={<Attendance />} />
           </Route>
         </Routes>
       </MantineProvider>
