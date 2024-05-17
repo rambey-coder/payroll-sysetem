@@ -15,10 +15,13 @@ import {
 
 interface Props {
   children: React.ReactNode;
+  pageName: string;
 }
 
-const Sidebar: React.FC<Props> = ({ children }) => {
-  const [active, setActive] = useState("Dashboard");
+const Sidebar: React.FC<Props> = ({ children, pageName }) => {
+  const [active, setActive] = useState(() => {
+    return sessionStorage.getItem("activePage") || "/dashboard/overview";
+  });
 
   const navigation = [
     { link: "/dashboard/overview", label: "Dashboard", icon: IconLayoutGrid },
@@ -38,6 +41,7 @@ const Sidebar: React.FC<Props> = ({ children }) => {
       key={i}
       onClick={() => {
         setActive(item.label);
+        sessionStorage.setItem("activePage", item.label);
       }}>
       <item.icon className={"linkIcon"} stroke={1.5} />
       <span>{item.label}</span>
@@ -64,8 +68,12 @@ const Sidebar: React.FC<Props> = ({ children }) => {
         </div>
       </nav>
 
-      <section className="w-[100%] bg-[#f8f9fa] overflow-y-scroll p-[1rem]">
-        {children}
+      <section className="w-[100%] bg-[#f8f9fa] overflow-y-scroll">
+        <div className="bg-white p-4 border-[#dee2e6] border-solid border-b">
+          <h1 className="text-2xl font-bold text-[#212529]">{pageName}</h1>
+        </div>
+
+        <div className="p-[1rem] mt-8">{children}</div>
       </section>
     </div>
   );

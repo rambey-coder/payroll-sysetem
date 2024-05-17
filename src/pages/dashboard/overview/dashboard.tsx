@@ -1,8 +1,9 @@
-import React from "react";
+import React, { SetStateAction, useEffect } from "react";
 import "./style.scss";
 import { Link } from "react-router-dom";
 import { BaseDir } from "../../../baseDir";
 import { Group, Paper, SimpleGrid, Text } from "@mantine/core";
+import { useOutletContext } from "react-router-dom";
 import { PrimaryButton } from "../../../components/button/button";
 import {
   IconUsers,
@@ -18,6 +19,7 @@ import {
 import { RecentPayrollHistory, WorkHourStat } from "./components";
 
 export const Dashboard = () => {
+  const [setPageName] = useOutletContext<any>();
   const quickActionList = [
     {
       title: "Manage Employee",
@@ -54,6 +56,10 @@ export const Dashboard = () => {
     { title: "Total Hours", icon: "hours", value: "745", diff: 18 },
     { title: "Total Leave Requests", icon: "leave", value: "188", diff: -30 },
   ] as const;
+
+  useEffect(() => {
+    setPageName("Dashboard");
+  }, []);
 
   const stats = data.map((stat) => {
     const Icon = icons[stat.icon];
