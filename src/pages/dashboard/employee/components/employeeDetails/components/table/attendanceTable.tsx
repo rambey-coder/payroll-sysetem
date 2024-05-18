@@ -17,15 +17,14 @@ import {
   IconChevronUp,
   IconSearch,
 } from "@tabler/icons-react";
-import { useNavigate } from "react-router-dom";
-import { NameProfile } from "../../../../../components/nameProfile";
+import { NameProfile } from "../../../../../../../components/nameProfile";
 
-export interface EmployeeData {
+interface RowData {
   name: string;
-  department: string;
-  employee_id: string;
-  role: string;
+  date: string;
   status: string;
+  checkIn: string;
+  checkOut: string;
 }
 
 interface ThProps {
@@ -57,7 +56,7 @@ function Th({ children, reversed, sorted, onSort }: ThProps) {
   );
 }
 
-function filterData(data: EmployeeData[], search: string) {
+function filterData(data: RowData[], search: string) {
   const query = search.toLowerCase().trim();
   return data.filter((item) =>
     keys(data[0]).some((key) => item[key].toLowerCase().includes(query))
@@ -65,8 +64,8 @@ function filterData(data: EmployeeData[], search: string) {
 }
 
 function sortData(
-  data: EmployeeData[],
-  payload: { sortBy: keyof EmployeeData | null; reversed: boolean; search: string }
+  data: RowData[],
+  payload: { sortBy: keyof RowData | null; reversed: boolean; search: string }
 ) {
   const { sortBy } = payload;
 
@@ -88,57 +87,50 @@ function sortData(
 
 const data = [
   {
-    role: "Manager",
+    date: "12-03-24",
     name: "Athena Weissnat",
-    status: "full_time",
-    department: "Admin",
-    employee_id: "AB1230",
+    status: "PRESENT",
+    checkIn: "08: 00 AM",
+    checkOut: "05: 00 PM",
   },
 
   {
-    role: "QA",
-    name: "John Doe",
-    status: "part_time",
-    department: "Product",
-    employee_id: "AB1231",
+    date: "12-04-24",
+    name: "Athena Weissnat",
+    status: "ABSENT",
+    checkIn: "08: 00 AM",
+    checkOut: "05: 00 PM",
   },
   {
-    role: "Backend Engineer",
-    name: "Jane Smith",
-    status: "intern",
-    department: "Engineering",
-    employee_id: "AB1232",
+    date: "12-05-24",
+    name: "Athena Weissnat",
+    status: "PRESENT",
+    checkIn: "08: 00 AM",
+    checkOut: "05: 00 PM",
   },
   {
-    role: "Sales",
-    name: "Bob Johnson",
-    status: "contract",
-    department: "Produt",
-    employee_id: "AB1233",
+    date: "12-06-24",
+    name: "Athena Weissnat",
+    status: "LEAVE",
+    checkIn: "08: 00 AM",
+    checkOut: "05: 00 PM",
   },
   {
-    role: "Frontend Engineer",
-    name: "Alice Williams",
-    status: "full_time",
-    department: "Engineering",
-    employee_id: "AB1234",
-  },
-  {
-    role: "Customer Success",
-    name: "Charlie Brown",
-    status: "part_time",
-    department: "Support",
-    employee_id: "AB125",
+    date: "12-07-24",
+    name: "Athena Weissnat",
+    status: "LEAVE",
+    checkIn: "08: 00 AM",
+    checkOut: "05: 00 PM",
   },
 ];
 
-export const EmployeeTable = () => {
+export const AttendanceTable = () => {
   const [search, setSearch] = useState("");
   const [sortedData, setSortedData] = useState(data);
-  const [sortBy, setSortBy] = useState<keyof EmployeeData | null>(null);
+  const [sortBy, setSortBy] = useState<keyof RowData | null>(null);
   const [reverseSortDirection, setReverseSortDirection] = useState(false);
 
-  const setSorting = (field: keyof EmployeeData) => {
+  const setSorting = (field: keyof RowData) => {
     const reversed = field === sortBy ? !reverseSortDirection : false;
     setReverseSortDirection(reversed);
     setSortBy(field);
@@ -153,48 +145,39 @@ export const EmployeeTable = () => {
     );
   };
 
-  const navigate = useNavigate();
-
   const rows = sortedData.map((row, i) => (
-    <Table.Tr
-      onClick={() =>
-        navigate(`/dashboard/employee/${row.employee_id}`, { state: row })
-      }
-      key={i}
-      className="cursor-pointer">
-      <Table.Td className="flex items-center gap-3">
+    <Table.Tr key={i}>
+      <Table.Td className="flex gap-3 items-center">
         <NameProfile name={row.name} />
         <span>{row.name}</span>
       </Table.Td>
-      <Table.Td>{row.employee_id}</Table.Td>
+      <Table.Td>{row.date}</Table.Td>
       <Table.Td>
-        {row.status === "full_time" ? (
+        {row.status === "PRESENT" ? (
           <Badge color="green" variant="light">
-            FULL-TIME
+            Present
           </Badge>
-        ) : row.status === "part_time" ? (
+        ) : row.status === "ABSENT" ? (
           <Badge color="orange" variant="light">
-            PART_TIME
-          </Badge>
-        ) : row.status === "contract" ? (
-          <Badge color="blue" variant="light">
-            CONTRACT
+            Absent
           </Badge>
         ) : (
-          <Badge color="gray" variant="light">
-            INTERN
+          <Badge color="red" variant="light">
+            Leave
           </Badge>
         )}
       </Table.Td>
-      <Table.Td>{row.department}</Table.Td>
-      <Table.Td>{row.role}</Table.Td>
+      <Table.Td>{row.checkIn}</Table.Td>
+      <Table.Td>{row.checkOut}</Table.Td>
     </Table.Tr>
   ));
 
   return (
     <ScrollArea>
       <Group className="justify-between mb-3">
-        <Text className="text-xl font-medium text-[#495057]">All Employee</Text>
+        <Text className="text-xl font-medium text-[#495057]">
+          Attendance Sheet
+        </Text>
 
         <TextInput
           placeholder="Search by any field"
@@ -220,16 +203,16 @@ export const EmployeeTable = () => {
         <Table.Tbody>
           <Table.Tr>
             <Th
+              sorted={sortBy === "date"}
+              reversed={reverseSortDirection}
+              onSort={() => setSorting("date")}>
+              Date
+            </Th>
+            <Th
               sorted={sortBy === "name"}
               reversed={reverseSortDirection}
               onSort={() => setSorting("name")}>
               Name
-            </Th>
-            <Th
-              sorted={sortBy === "employee_id"}
-              reversed={reverseSortDirection}
-              onSort={() => setSorting("employee_id")}>
-              Employee ID
             </Th>
             <Th
               sorted={sortBy === "status"}
@@ -238,16 +221,16 @@ export const EmployeeTable = () => {
               Status
             </Th>
             <Th
-              sorted={sortBy === "department"}
+              sorted={sortBy === "checkIn"}
               reversed={reverseSortDirection}
-              onSort={() => setSorting("department")}>
-              Department
+              onSort={() => setSorting("checkIn")}>
+              Check In
             </Th>
             <Th
-              sorted={sortBy === "role"}
+              sorted={sortBy === "checkOut"}
               reversed={reverseSortDirection}
-              onSort={() => setSorting("role")}>
-              Role
+              onSort={() => setSorting("checkOut")}>
+              Check Out
             </Th>
           </Table.Tr>
         </Table.Tbody>
