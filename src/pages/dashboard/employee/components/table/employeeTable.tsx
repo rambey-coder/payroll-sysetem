@@ -17,6 +17,7 @@ import {
   IconChevronUp,
   IconSearch,
 } from "@tabler/icons-react";
+import { useNavigate } from "react-router-dom";
 import { NameProfile } from "../../../../../components/nameProfile";
 
 interface RowData {
@@ -152,8 +153,14 @@ export const EmployeeTable = () => {
     );
   };
 
+  const navigate = useNavigate();
+
   const rows = sortedData.map((row, i) => (
-    <Table.Tr key={i}>
+    <Table.Tr
+      onClick={() => navigate(`/dashboard/employee/${row.employee_id}`)}
+      key={i}
+      className="cursor-pointer"
+      >
       <Table.Td className="flex items-center gap-3">
         <NameProfile name={row.name} />
         <span>{row.name}</span>
@@ -186,9 +193,7 @@ export const EmployeeTable = () => {
   return (
     <ScrollArea>
       <Group className="justify-between mb-3">
-        <Text className="text-xl font-medium text-[#495057]">
-          Attendance Sheet
-        </Text>
+        <Text className="text-xl font-medium text-[#495057]">All Employee</Text>
 
         <TextInput
           placeholder="Search by any field"
