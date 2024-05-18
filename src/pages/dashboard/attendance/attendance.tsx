@@ -54,7 +54,7 @@ export const Attendance = () => {
         </SimpleGrid>
       </div>
 
-      <div className="bg-white p-4 rounded-lg mt-[5rem]">
+      <div className="bg-white p-4 rounded-lg mt-[3rem]">
         <AttendanceTable />
       </div>
     </div>

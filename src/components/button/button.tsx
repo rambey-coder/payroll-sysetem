@@ -11,7 +11,7 @@ export const PrimaryButton: React.FC<ButtonVariantProps> = ({
   onClick,
   disabled,
   loading,
-  variant
+  variant,
 }) => {
   return (
     <Button
@@ -38,12 +38,14 @@ export const ButtonWithIcon: React.FC<ButtonWithIconProps> = ({
   disabled,
   loading,
   type,
+  variant,
   leftSection,
   rightSection,
   justify,
 }) => (
   <Button
-    variant={type}
+    variant={variant}
+    type={type}
     radius={radius}
     size="md"
     color={color ? color : "#9263F8"}

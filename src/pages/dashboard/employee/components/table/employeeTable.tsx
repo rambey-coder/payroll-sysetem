@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "./style.scss";
 import {
   Table,
   ScrollArea,
@@ -22,9 +21,9 @@ import { NameProfile } from "../../../../../components/nameProfile";
 
 interface RowData {
   name: string;
-  date: string;
   department: string;
-  amount: string;
+  employee_id: string;
+  role: string;
   status: string;
 }
 
@@ -88,51 +87,51 @@ function sortData(
 
 const data = [
   {
-    date: "12-03-24",
+    role: "Manager",
     name: "Athena Weissnat",
-    status: "PENDING",
-    department: "Engineering",
-    amount: "£300",
+    status: "full_time",
+    department: "Admin",
+    employee_id: "AB1230",
   },
 
   {
-    date: "12-04-24",
+    role: "QA",
     name: "John Doe",
-    status: "COMPLETED",
-    department: "Marketing",
-    amount: "£500",
+    status: "part_time",
+    department: "Product",
+    employee_id: "AB1231",
   },
   {
-    date: "12-05-24",
+    role: "Backend Engineer",
     name: "Jane Smith",
-    status: "PENDING",
-    department: "Sales",
-    amount: "£400",
-  },
-  {
-    date: "12-06-24",
-    name: "Bob Johnson",
-    status: "COMPLETED",
+    status: "intern",
     department: "Engineering",
-    amount: "£600",
+    employee_id: "AB1232",
   },
   {
-    date: "12-07-24",
+    role: "Sales",
+    name: "Bob Johnson",
+    status: "contract",
+    department: "Produt",
+    employee_id: "AB1233",
+  },
+  {
+    role: "Frontend Engineer",
     name: "Alice Williams",
-    status: "PENDING",
-    department: "HR",
-    amount: "£700",
+    status: "full_time",
+    department: "Engineering",
+    employee_id: "AB1234",
   },
   {
-    date: "12-08-24",
+    role: "Customer Success",
     name: "Charlie Brown",
-    status: "COMPLETED",
-    department: "Finance",
-    amount: "£800",
+    status: "part_time",
+    department: "Support",
+    employee_id: "AB125",
   },
 ];
 
-export const RecentPayrollHistory = () => {
+export const EmployeeTable = () => {
   const [search, setSearch] = useState("");
   const [sortedData, setSortedData] = useState(data);
   const [sortBy, setSortBy] = useState<keyof RowData | null>(null);
@@ -155,28 +154,32 @@ export const RecentPayrollHistory = () => {
 
   const rows = sortedData.map((row, i) => (
     <Table.Tr key={i}>
-      <Table.Td className="flex gap-3 items-center">
+      <Table.Td className="flex items-center gap-3">
         <NameProfile name={row.name} />
         <span>{row.name}</span>
       </Table.Td>
-      <Table.Td>{row.date}</Table.Td>
+      <Table.Td>{row.employee_id}</Table.Td>
       <Table.Td>
-        {row.status === "COMPLETED" ? (
+        {row.status === "full_time" ? (
           <Badge color="green" variant="light">
-            Completed
+            FULL-TIME
           </Badge>
-        ) : row.status === "PENDING" ? (
+        ) : row.status === "part_time" ? (
           <Badge color="orange" variant="light">
-            Pending
+            PART_TIME
+          </Badge>
+        ) : row.status === "contract" ? (
+          <Badge color="blue" variant="light">
+            CONTRACT
           </Badge>
         ) : (
-          <Badge color="yellow" variant="light">
-            Awaiting
+          <Badge color="gray" variant="light">
+            INTERN
           </Badge>
         )}
       </Table.Td>
       <Table.Td>{row.department}</Table.Td>
-      <Table.Td>{row.amount}</Table.Td>
+      <Table.Td>{row.role}</Table.Td>
     </Table.Tr>
   ));
 
@@ -184,7 +187,7 @@ export const RecentPayrollHistory = () => {
     <ScrollArea>
       <Group className="justify-between mb-3">
         <Text className="text-xl font-medium text-[#495057]">
-          Recent Payroll History
+          Attendance Sheet
         </Text>
 
         <TextInput
@@ -211,16 +214,16 @@ export const RecentPayrollHistory = () => {
         <Table.Tbody>
           <Table.Tr>
             <Th
-              sorted={sortBy === "date"}
-              reversed={reverseSortDirection}
-              onSort={() => setSorting("date")}>
-              Date
-            </Th>
-            <Th
               sorted={sortBy === "name"}
               reversed={reverseSortDirection}
               onSort={() => setSorting("name")}>
               Name
+            </Th>
+            <Th
+              sorted={sortBy === "employee_id"}
+              reversed={reverseSortDirection}
+              onSort={() => setSorting("employee_id")}>
+              Employee ID
             </Th>
             <Th
               sorted={sortBy === "status"}
@@ -235,10 +238,10 @@ export const RecentPayrollHistory = () => {
               Department
             </Th>
             <Th
-              sorted={sortBy === "amount"}
+              sorted={sortBy === "role"}
               reversed={reverseSortDirection}
-              onSort={() => setSorting("amount")}>
-              Amount Disbursed
+              onSort={() => setSorting("role")}>
+              Role
             </Th>
           </Table.Tr>
         </Table.Tbody>
