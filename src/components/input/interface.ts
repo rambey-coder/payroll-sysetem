@@ -14,3 +14,15 @@ export interface InputVariantProps {
   name?: string;
   id?: string;
 }
+
+export interface ISelect {
+  label: string;
+  placeholder: string;
+  data: { value: string; label: string }[];
+  defaultValue?: string;
+  clearable: boolean;
+  onChange?: (value: string | any) => void;
+  name: string;
+  id?: string;
+  required?: boolean;
+}

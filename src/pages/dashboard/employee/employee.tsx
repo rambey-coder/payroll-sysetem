@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useDisclosure } from "@mantine/hooks";
 import { useOutletContext } from "react-router-dom";
 import { Paper, SimpleGrid, Text } from "@mantine/core";
 import {
@@ -10,9 +11,11 @@ import {
 } from "@tabler/icons-react";
 import { ButtonWithIcon } from "../../../components";
 import { EmployeeTable } from "./components/table/employeeTable";
+import { AddEmployee } from "./components/addEmployee/addEmployee";
 
 export const Employee = () => {
   const [setPageName] = useOutletContext<any>();
+  const [opened, { open, close }] = useDisclosure(false);
 
   const statData = [
     {
@@ -43,6 +46,7 @@ export const Employee = () => {
 
   return (
     <div>
+      <AddEmployee opened={opened} close={close} />
       <div className="mb-8 flex justify-end">
         <ButtonWithIcon
           type="button"
@@ -51,6 +55,7 @@ export const Employee = () => {
           name="Add Employee"
           color="#9263F8"
           leftSection={<IconPlus />}
+          onClick={open}
         />
       </div>
       <SimpleGrid cols={{ base: 1, xs: 2, md: 4 }}>
