@@ -59,6 +59,10 @@ export const AddEmployee: React.FC<Props> = ({ opened, close }) => {
       label: "Contract",
       value: "contract",
     },
+    {
+      label: "Intern",
+      value: "intern",
+    },
   ];
 
   return (

@@ -7,9 +7,12 @@ import {
   IconLogin,
   IconCoffee,
   IconLogout,
+  IconTrash,
+  IconEdit,
 } from "@tabler/icons-react";
 import { SimpleGrid, Paper, Text } from "@mantine/core";
 import { AttendanceTable } from "./components";
+import { ButtonWithIcon, PrimaryButton } from "../../../../../components";
 
 export const EmployeeDetails = () => {
   const { id } = useParams<string>();
@@ -51,9 +54,35 @@ export const EmployeeDetails = () => {
 
   return (
     <div>
-      <BreadCrumb items={items} />
+      <div className="flex items-center justify-between mb-8">
+        <BreadCrumb items={items} />
 
-      <div className="mt-8">
+        <div className="flex gap-5 items-center">
+          <ButtonWithIcon
+            leftSection={
+              <IconTrash className="icon" stroke={1.5} color="#d90429" />
+            }
+            variant="light"
+            name="Terminate Contract"
+            color="#d90429"
+            type="button"
+            radius="md"
+          />
+
+          <ButtonWithIcon
+            leftSection={
+              <IconEdit className="icon" stroke={1.5} color="#c8b6ff" />
+            }
+            variant="filled"
+            name="Edit"
+            color="#6247aa"
+            type="button"
+            radius="md"
+          />
+        </div>
+      </div>
+
+      <div className="my-12">
         <EmployeeStat />
       </div>
 

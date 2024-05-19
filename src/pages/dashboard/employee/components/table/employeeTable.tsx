@@ -26,6 +26,7 @@ export interface EmployeeData {
   employee_id: string;
   role: string;
   status: string;
+  salary: string;
 }
 
 interface ThProps {
@@ -66,7 +67,11 @@ function filterData(data: EmployeeData[], search: string) {
 
 function sortData(
   data: EmployeeData[],
-  payload: { sortBy: keyof EmployeeData | null; reversed: boolean; search: string }
+  payload: {
+    sortBy: keyof EmployeeData | null;
+    reversed: boolean;
+    search: string;
+  }
 ) {
   const { sortBy } = payload;
 
@@ -90,6 +95,7 @@ const data = [
   {
     role: "Manager",
     name: "Athena Weissnat",
+    salary: "300000",
     status: "full_time",
     department: "Admin",
     employee_id: "AB1230",
@@ -98,6 +104,7 @@ const data = [
   {
     role: "QA",
     name: "John Doe",
+    salary: "230000",
     status: "part_time",
     department: "Product",
     employee_id: "AB1231",
@@ -105,6 +112,7 @@ const data = [
   {
     role: "Backend Engineer",
     name: "Jane Smith",
+    salary: "320000",
     status: "intern",
     department: "Engineering",
     employee_id: "AB1232",
@@ -112,6 +120,7 @@ const data = [
   {
     role: "Sales",
     name: "Bob Johnson",
+    salary: "150000",
     status: "contract",
     department: "Produt",
     employee_id: "AB1233",
@@ -119,6 +128,7 @@ const data = [
   {
     role: "Frontend Engineer",
     name: "Alice Williams",
+    salary: "340000",
     status: "full_time",
     department: "Engineering",
     employee_id: "AB1234",
@@ -127,6 +137,7 @@ const data = [
     role: "Customer Success",
     name: "Charlie Brown",
     status: "part_time",
+    salary: "100000",
     department: "Support",
     employee_id: "AB125",
   },
@@ -166,7 +177,8 @@ export const EmployeeTable = () => {
         <NameProfile name={row.name} />
         <span>{row.name}</span>
       </Table.Td>
-      <Table.Td>{row.employee_id}</Table.Td>
+      {/* <Table.Td>{row.employee_id}</Table.Td> */}
+      <Table.Td>{Number(row.salary).toLocaleString()}</Table.Td>
       <Table.Td>
         {row.status === "full_time" ? (
           <Badge color="green" variant="light">
@@ -225,11 +237,17 @@ export const EmployeeTable = () => {
               onSort={() => setSorting("name")}>
               Name
             </Th>
-            <Th
+            {/* <Th
               sorted={sortBy === "employee_id"}
               reversed={reverseSortDirection}
               onSort={() => setSorting("employee_id")}>
               Employee ID
+            </Th> */}
+            <Th
+              sorted={sortBy === "salary"}
+              reversed={reverseSortDirection}
+              onSort={() => setSorting("salary")}>
+              Salary
             </Th>
             <Th
               sorted={sortBy === "status"}
