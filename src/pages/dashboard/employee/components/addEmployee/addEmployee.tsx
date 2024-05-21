@@ -20,6 +20,7 @@ export const AddEmployee: React.FC<Props> = ({ opened, close }) => {
       department: "",
       role: "",
       status: "",
+      salary: "",
     },
 
     validate: {
@@ -108,6 +109,18 @@ export const AddEmployee: React.FC<Props> = ({ opened, close }) => {
             required
             key={form.key("role")}
             {...form.getInputProps("role")}
+          />
+        </div>
+        <div className="mb-3">
+          <TxtInput
+            label="Salary"
+            type="text"
+            id="salary"
+            name="salary"
+            placeholder="Manager"
+            required
+            key={form.key("salary")}
+            {...form.getInputProps("salary")}
           />
         </div>
         <div className="mb-4">

@@ -12,7 +12,7 @@ import {
 } from "@tabler/icons-react";
 import { SimpleGrid, Paper, Text } from "@mantine/core";
 import { AttendanceTable } from "./components";
-import { ButtonWithIcon, PrimaryButton } from "../../../../../components";
+import { ButtonWithIcon, Tab } from "../../../../../components";
 
 export const EmployeeDetails = () => {
   const { id } = useParams<string>();
@@ -101,6 +101,8 @@ export const EmployeeDetails = () => {
           </Paper>
         ))}
       </SimpleGrid>
+
+      <Tab defaultValue="Personal"/>
 
       <div className="bg-white p-4 mt-8">
         <AttendanceTable />
