@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "./style.scss";
 import {
   Table,
   ScrollArea,
@@ -18,14 +17,14 @@ import {
   IconChevronUp,
   IconSearch,
 } from "@tabler/icons-react";
-import { NameProfile } from "../../../../../components/nameProfile";
+import { NameProfile } from "../../../../../../../components/nameProfile";
 
 interface RowData {
   name: string;
   date: string;
-  department: string;
-  amount: string;
   status: string;
+  checkIn: string;
+  checkOut: string;
 }
 
 interface ThProps {
@@ -90,49 +89,42 @@ const data = [
   {
     date: "12-03-24",
     name: "Athena Weissnat",
-    status: "PENDING",
-    department: "Engineering",
-    amount: "£300",
+    status: "PRESENT",
+    checkIn: "08: 00 AM",
+    checkOut: "05: 00 PM",
   },
 
   {
     date: "12-04-24",
-    name: "John Doe",
-    status: "COMPLETED",
-    department: "Marketing",
-    amount: "£500",
+    name: "Athena Weissnat",
+    status: "ABSENT",
+    checkIn: "08: 00 AM",
+    checkOut: "05: 00 PM",
   },
   {
     date: "12-05-24",
-    name: "Jane Smith",
-    status: "PENDING",
-    department: "Sales",
-    amount: "£400",
+    name: "Athena Weissnat",
+    status: "PRESENT",
+    checkIn: "08: 00 AM",
+    checkOut: "05: 00 PM",
   },
   {
     date: "12-06-24",
-    name: "Bob Johnson",
-    status: "COMPLETED",
-    department: "Engineering",
-    amount: "£600",
+    name: "Athena Weissnat",
+    status: "LEAVE",
+    checkIn: "08: 00 AM",
+    checkOut: "05: 00 PM",
   },
   {
     date: "12-07-24",
-    name: "Alice Williams",
-    status: "PENDING",
-    department: "HR",
-    amount: "£700",
-  },
-  {
-    date: "12-08-24",
-    name: "Charlie Brown",
-    status: "COMPLETED",
-    department: "Finance",
-    amount: "£800",
+    name: "Athena Weissnat",
+    status: "LEAVE",
+    checkIn: "08: 00 AM",
+    checkOut: "05: 00 PM",
   },
 ];
 
-export const RecentPayrollHistory = () => {
+export const AttendanceTable = () => {
   const [search, setSearch] = useState("");
   const [sortedData, setSortedData] = useState(data);
   const [sortBy, setSortBy] = useState<keyof RowData | null>(null);
@@ -161,22 +153,22 @@ export const RecentPayrollHistory = () => {
       </Table.Td>
       <Table.Td>{row.date}</Table.Td>
       <Table.Td>
-        {row.status === "COMPLETED" ? (
+        {row.status === "PRESENT" ? (
           <Badge color="green" variant="light">
-            Completed
+            Present
           </Badge>
-        ) : row.status === "PENDING" ? (
+        ) : row.status === "ABSENT" ? (
           <Badge color="orange" variant="light">
-            Pending
+            Absent
           </Badge>
         ) : (
-          <Badge color="yellow" variant="light">
-            Awaiting
+          <Badge color="red" variant="light">
+            Leave
           </Badge>
         )}
       </Table.Td>
-      <Table.Td>{row.department}</Table.Td>
-      <Table.Td>{row.amount}</Table.Td>
+      <Table.Td>{row.checkIn}</Table.Td>
+      <Table.Td>{row.checkOut}</Table.Td>
     </Table.Tr>
   ));
 
@@ -184,7 +176,7 @@ export const RecentPayrollHistory = () => {
     <ScrollArea>
       <Group className="justify-between mb-3">
         <Text className="text-xl font-medium text-[#495057]">
-          Recent Payroll History
+          Attendance Sheet
         </Text>
 
         <TextInput
@@ -229,16 +221,16 @@ export const RecentPayrollHistory = () => {
               Status
             </Th>
             <Th
-              sorted={sortBy === "department"}
+              sorted={sortBy === "checkIn"}
               reversed={reverseSortDirection}
-              onSort={() => setSorting("department")}>
-              Department
+              onSort={() => setSorting("checkIn")}>
+              Check In
             </Th>
             <Th
-              sorted={sortBy === "amount"}
+              sorted={sortBy === "checkOut"}
               reversed={reverseSortDirection}
-              onSort={() => setSorting("amount")}>
-              Amount Disbursed
+              onSort={() => setSorting("checkOut")}>
+              Check Out
             </Th>
           </Table.Tr>
         </Table.Tbody>

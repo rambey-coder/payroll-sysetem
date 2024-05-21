@@ -1,9 +1,10 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "@mantine/form";
 import { PrimaryButton, TxtInput } from "../../../components";
 
 export const SignIn = () => {
+  const navigate = useNavigate();
   const form = useForm({
     mode: "uncontrolled",
     initialValues: {
@@ -32,7 +33,10 @@ export const SignIn = () => {
           onSubmit={form.onSubmit((values) => {
             form.validate();
             const isValid = form.isValid();
-            if (isValid) console.log(values);
+            if (isValid) {
+              console.log(values);
+              navigate("/dashboard/overview");
+            }
           })}>
           <div className="mb-4">
             <TxtInput

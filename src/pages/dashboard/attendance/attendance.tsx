@@ -5,8 +5,9 @@ import {
   IconCoffee,
   IconLogout,
 } from "@tabler/icons-react";
-import React from "react";
+import React, { useEffect } from "react";
 import { AttendanceTable } from "./components/table";
+import { useOutletContext } from "react-router-dom";
 
 export const Attendance = () => {
   const data = [
@@ -27,11 +28,15 @@ export const Attendance = () => {
       value: "188",
     },
   ];
+  const [setPageName] = useOutletContext<any>();
+
+  useEffect(() => {
+    setPageName("Attendance");
+  }, []);
+
   return (
     <div>
-      <h1 className="font-bold text-3xl text-[#212529]">Attendance</h1>
-
-      <div className="mt-[4rem]">
+      <div className="">
         <SimpleGrid cols={{ base: 1, xs: 2, md: 4 }}>
           {data.map((stat) => (
             <Paper withBorder p="md" radius="md" key={stat.title}>
@@ -49,7 +54,7 @@ export const Attendance = () => {
         </SimpleGrid>
       </div>
 
-      <div className="bg-white p-4 rounded-lg mt-[5rem]">
+      <div className="bg-white p-4 rounded-lg mt-[3rem]">
         <AttendanceTable />
       </div>
     </div>

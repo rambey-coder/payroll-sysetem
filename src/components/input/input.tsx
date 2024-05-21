@@ -1,6 +1,6 @@
 import React from "react";
-import { InputVariantProps } from "./nterface";
-import { TextInput, Textarea } from "@mantine/core";
+import { ISelect, InputVariantProps } from "./interface";
+import { TextInput, Textarea, Select } from "@mantine/core";
 import "./style.scss";
 
 export const TxtInput: React.FC<InputVariantProps> = ({
@@ -62,3 +62,31 @@ export const TxtArea: React.FC<InputVariantProps> = ({
     id={id}
   />
 );
+
+export const SelectOption: React.FC<ISelect> = ({
+  label,
+  placeholder,
+  data,
+  defaultValue,
+  clearable,
+  onChange,
+  name,
+  id,
+  required,
+}) => {
+  return (
+    <Select
+      label={label}
+      placeholder={placeholder}
+      data={data}
+      defaultValue={defaultValue}
+      clearable={clearable}
+      onChange={onChange}
+      name={name}
+      id={id}
+      required={required}
+      radius="md"
+      size="md"
+    />
+  );
+};

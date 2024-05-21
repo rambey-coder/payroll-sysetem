@@ -5,8 +5,9 @@ import {
   IconLoader,
 } from "@tabler/icons-react";
 import { Paper, SimpleGrid, Text } from "@mantine/core";
-import React from "react";
+import React, { useEffect } from "react";
 import { PayrollTable } from "./components";
+import { useOutletContext } from "react-router-dom";
 
 export const Payroll = () => {
   const data = [
@@ -27,11 +28,16 @@ export const Payroll = () => {
       value: "$2,188",
     },
   ];
+
+  const [setPageName] = useOutletContext<any>();
+
+  useEffect(() => {
+    setPageName("Payroll");
+  }, []);
+
   return (
     <div>
-      <h1 className="font-bold text-3xl text-[#212529]">Payroll</h1>
-
-      <div className="mt-[4rem]">
+      <div className="">
         <SimpleGrid cols={{ base: 1, xs: 2, md: 4 }}>
           {data.map((stat) => (
             <Paper withBorder p="md" radius="md" key={stat.title}>

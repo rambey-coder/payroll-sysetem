@@ -17,6 +17,7 @@ import {
   IconChevronUp,
   IconSearch,
 } from "@tabler/icons-react";
+import { NameProfile } from "../../../../../components/nameProfile";
 
 interface RowData {
   name: string;
@@ -153,8 +154,11 @@ export const AttendanceTable = () => {
 
   const rows = sortedData.map((row, i) => (
     <Table.Tr key={i}>
+      <Table.Td className="flex gap-3 items-center">
+        <NameProfile name={row.name} />
+        <span>{row.name}</span>
+      </Table.Td>
       <Table.Td>{row.date}</Table.Td>
-      <Table.Td>{row.name}</Table.Td>
       <Table.Td>
         {row.status === "PRESENT" ? (
           <Badge color="green" variant="light">
