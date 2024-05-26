@@ -17,9 +17,12 @@ import {
   IconArrowDownRight,
 } from "@tabler/icons-react";
 import { RecentPayrollHistory, WorkHourStat } from "./components";
+import { useSelector } from "react-redux";
 
 export const Dashboard = () => {
   const [setPageName] = useOutletContext<any>();
+  const { userDetails } = useSelector((state: any) => state.auth);
+
   const quickActionList = [
     {
       title: "Manage Employee",
@@ -100,7 +103,7 @@ export const Dashboard = () => {
         <div className="bg-[#271E3B] p-6 rounded-lg w-[100%] flex items-center justify-between ">
           <div>
             <h1 className="text-white text-2xl font-bold">
-              Good to see you, Rambey 👋
+              Good to see you, {userDetails.first_name} 👋
             </h1>
             <p className="text-white my-4">How are you doing today?</p>
 
