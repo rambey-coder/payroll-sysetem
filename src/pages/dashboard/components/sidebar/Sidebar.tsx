@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./style.scss";
 import { Group } from "@mantine/core";
 import {
@@ -12,6 +12,8 @@ import {
   IconLayoutGrid,
   IconCalendarEvent,
 } from "@tabler/icons-react";
+import { useDispatch } from "react-redux";
+import { clearUserDetails } from "../../../../store/auth/authSlice";
 
 interface Props {
   children: React.ReactNode;
@@ -19,6 +21,8 @@ interface Props {
 }
 
 const Sidebar: React.FC<Props> = ({ children, pageName }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [active, setActive] = useState(() => {
     return sessionStorage.getItem("activePage") || "/dashboard/overview";
   });
@@ -61,7 +65,13 @@ const Sidebar: React.FC<Props> = ({ children, pageName }) => {
         </div>
 
         <div className={"footer"}>
-          <div className="link">
+          <div
+            className="link"
+            onClick={() => {
+              sessionStorage.clear();
+              navigate("/");
+              dispatch(clearUserDetails());
+            }}>
             <IconLogout className={"linkIcon"} stroke={1.5} />
             <span>Logout</span>
           </div>

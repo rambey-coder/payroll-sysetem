@@ -1,10 +1,39 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "@mantine/form";
 import { PrimaryButton, TxtInput } from "../../../components";
+import { useLoginMutation } from "../../../store/auth";
+import { alert } from "../../../utils";
+// import { dispatch } from "../../../store/store";
+import { useDispatch } from "react-redux";
+import { setUserDetails } from "../../../store/auth/authSlice";
 
 export const SignIn = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [login, { data, isError, isLoading, isSuccess }] = useLoginMutation();
+
+  console.log("err", isError, "load", isLoading, "succ", isSuccess, data);
+
+  useEffect(() => {
+    if (data && isSuccess) {
+      const { user } = data.userDetails;
+      sessionStorage.setItem("access_token", data.userDetails.token);
+      sessionStorage.setItem(
+        "user_details",
+        JSON.stringify(data.userDetails.user)
+      );
+
+      dispatch(setUserDetails({ user }));
+
+      navigate("/dashboard/overview");
+
+      alert.success("Login Successful");
+    }
+
+    if (isError) alert.error("An error occured");
+  }, [data, isError, isSuccess]);
+
   const form = useForm({
     mode: "uncontrolled",
     initialValues: {
@@ -30,12 +59,11 @@ export const SignIn = () => {
         </p>
         <form
           className="mt-4"
-          onSubmit={form.onSubmit((values) => {
+          onSubmit={form.onSubmit(async (values) => {
             form.validate();
             const isValid = form.isValid();
             if (isValid) {
-              console.log(values);
-              navigate("/dashboard/overview");
+              await login(values);
             }
           })}>
           <div className="mb-4">

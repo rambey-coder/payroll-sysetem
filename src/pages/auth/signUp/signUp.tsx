@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useForm } from "@mantine/form";
 import { PrimaryButton, TxtInput } from "../../../components";
 import { useSignUpMutation } from "../../../store/auth";
-import { errorHandler } from "../../../utils/errorHandler";
+import { alert } from "../../../utils";
 
 export const SignUp = () => {
   const [signUp, { data, isError, isLoading, isSuccess }] = useSignUpMutation();
@@ -37,19 +37,11 @@ export const SignUp = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      console.log('sks');
-      
-      errorHandler({
-        isSuccess: isSuccess,
-        isError: isError,
-        message: "Account created successfully",
-      });
-    } else if (isError) {
-      errorHandler({
-        isSuccess: isSuccess,
-        isError: isError,
-        message: "An error occurred",
-      });
+      console.log("sks");
+      alert.success("Account created sucessfully");
+    }
+    if (isError) {
+      console.log(isError);
     }
   }, [isSuccess, data, isError]);
 
@@ -58,7 +50,9 @@ export const SignUp = () => {
   return (
     <div className="bg-[#e9ecef] h-[100vh] w-100 flex items-center justify-center">
       <div className="p-8 bg-white rounded-md w-[80%] max-w-[450px] mx-auto">
-        <h1 className="text-[#9263f8] text-left text-3xl font-bold">
+        <h1
+          onClick={() => alert.success("yo!!")}
+          className="text-[#9263f8] text-left text-3xl font-bold">
           Register
         </h1>
         <p className="text-[#626262] text-sm my-3">

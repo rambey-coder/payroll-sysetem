@@ -6,6 +6,7 @@ import {
   SelectOption,
   TxtInput,
 } from "../../../../../components";
+import { useAddEmployeeMutation } from "../../../../../store/employee";
 
 interface Props {
   opened: boolean;
@@ -13,6 +14,11 @@ interface Props {
 }
 
 export const AddEmployee: React.FC<Props> = ({ opened, close }) => {
+  const [addEmployee, { data, isError, isLoading, isSuccess }] =
+    useAddEmployeeMutation();
+
+  console.log("err", isError, "load", isLoading, "succ", isSuccess, data);
+
   const form = useForm({
     mode: "uncontrolled",
     initialValues: {
@@ -74,7 +80,7 @@ export const AddEmployee: React.FC<Props> = ({ opened, close }) => {
 
           const isValid = form.isValid();
 
-          if (isValid) console.log(values);
+          if (isValid) addEmployee(values);
         })}>
         <div className="mb-3">
           <TxtInput
@@ -117,7 +123,7 @@ export const AddEmployee: React.FC<Props> = ({ opened, close }) => {
             type="text"
             id="salary"
             name="salary"
-            placeholder="Manager"
+            placeholder="Salary"
             required
             key={form.key("salary")}
             {...form.getInputProps("salary")}

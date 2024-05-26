@@ -12,7 +12,7 @@ export const authApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: `${BaseDir.API_BASE_URL}` }),
   tagTypes: ["Auth"],
   endpoints: (builder) => ({
-    login: builder.mutation<LoginPayload, LoginResponse>({
+    login: builder.mutation<LoginResponse, LoginPayload>({
       query: (body) => ({
         url: "/login",
         method: "POST",
@@ -20,7 +20,7 @@ export const authApi = createApi({
       }),
       invalidatesTags: ["Auth"],
     }),
-    signUp: builder.mutation<SignUpPayload, SignUpResponse>({
+    signUp: builder.mutation<SignUpResponse, SignUpPayload>({
       query: (body) => ({
         url: "/user",
         method: "POST",
