@@ -1,10 +1,33 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "@mantine/form";
 import { PrimaryButton, TxtInput } from "../../../components";
+import { useLoginMutation } from "../../../store/auth";
+import { alert } from "../../../utils";
+import { useDispatch } from "react-redux";
+import { setUserDetails } from "../../../store/auth/authSlice";
 
 export const SignIn = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [login, { data, isError, isLoading, isSuccess }] = useLoginMutation();
+
+  console.log("err", isError, "load", isLoading, "succ", isSuccess, data);
+
+  useEffect(() => {
+    if (data && isSuccess) {
+      const { user, token } = data.userDetails;
+
+      dispatch(setUserDetails({ user, token }));
+
+      navigate("/dashboard/overview");
+
+      alert.success("Login Successful");
+    }
+
+    if (isError) alert.error("An error occured");
+  }, [data, isError, isSuccess]);
+
   const form = useForm({
     mode: "uncontrolled",
     initialValues: {
@@ -30,12 +53,11 @@ export const SignIn = () => {
         </p>
         <form
           className="mt-4"
-          onSubmit={form.onSubmit((values) => {
+          onSubmit={form.onSubmit(async (values) => {
             form.validate();
             const isValid = form.isValid();
             if (isValid) {
-              console.log(values);
-              navigate("/dashboard/overview");
+              await login(values);
             }
           })}>
           <div className="mb-4">
@@ -66,10 +88,11 @@ export const SignIn = () => {
           <div className="mb-4">
             <PrimaryButton
               type="submit"
-              variant="outline"
+              variant="filled"
               name="Sign In"
               fullWidth
               radius="md"
+              loading={isLoading}
             />
           </div>
         </form>

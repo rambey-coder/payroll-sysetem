@@ -26,7 +26,6 @@ html {
   scroll-behavior: smooth;
 }
 
-
 html:focus-within {
   scroll-behavior: smooth;
 }
@@ -43,4 +42,11 @@ html:focus-within {
 
 ::-webkit-scrollbar-track {
   background: #f1f1f1;
+}
+
+.mantine-Notifications-root {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 350px;
 }

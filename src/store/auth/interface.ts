@@ -3,6 +3,18 @@ export interface LoginPayload {
   password: string;
 }
 
+export interface IUser {
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone: string | null;
+  password: string;
+  confirmPassword: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface SignUpPayload {
   first_name: string;
   last_name: string;
@@ -11,6 +23,15 @@ export interface SignUpPayload {
   password: string;
 }
 
-export interface LoginResponse {}
+interface UserDetails {
+  token: string;
+  user: IUser;
+}
 
-export interface SignUpResponse {}
+export interface LoginResponse {
+  userDetails: UserDetails;
+}
+
+export interface SignUpResponse {
+  message: string;
+}

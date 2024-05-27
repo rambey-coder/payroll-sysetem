@@ -19,6 +19,7 @@ import {
 } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 import { NameProfile } from "../../../../../components/nameProfile";
+import { useGetEmployeeQuery } from "../../../../../store/employee";
 
 export interface EmployeeData {
   name: string;
@@ -148,6 +149,8 @@ export const EmployeeTable = () => {
   const [sortedData, setSortedData] = useState(data);
   const [sortBy, setSortBy] = useState<keyof EmployeeData | null>(null);
   const [reverseSortDirection, setReverseSortDirection] = useState(false);
+
+  const { data: allEmployee } = useGetEmployeeQuery();
 
   const setSorting = (field: keyof EmployeeData) => {
     const reversed = field === sortBy ? !reverseSortDirection : false;
