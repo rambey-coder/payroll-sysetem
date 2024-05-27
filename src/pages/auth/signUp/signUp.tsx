@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "@mantine/form";
 import { PrimaryButton, TxtInput } from "../../../components";
 import { useSignUpMutation } from "../../../store/auth";
 import { alert } from "../../../utils";
 
 export const SignUp = () => {
+  const navigate = useNavigate();
   const [signUp, { data, isError, isLoading, isSuccess }] = useSignUpMutation();
 
   const form = useForm({
@@ -37,10 +38,11 @@ export const SignUp = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      console.log("sks");
       alert.success("Account created sucessfully");
+      navigate("/");
     }
     if (isError) {
+      alert.error("An Error Occured" || data?.message);
       console.log(isError);
     }
   }, [isSuccess, data, isError]);
@@ -146,10 +148,11 @@ export const SignUp = () => {
           <div className="mb-4">
             <PrimaryButton
               type="submit"
-              variant="outline"
+              variant="filled"
               name="Register"
               fullWidth
               radius="md"
+              loading={isLoading}
             />
           </div>
         </form>

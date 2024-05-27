@@ -4,7 +4,6 @@ import { useForm } from "@mantine/form";
 import { PrimaryButton, TxtInput } from "../../../components";
 import { useLoginMutation } from "../../../store/auth";
 import { alert } from "../../../utils";
-// import { dispatch } from "../../../store/store";
 import { useDispatch } from "react-redux";
 import { setUserDetails } from "../../../store/auth/authSlice";
 
@@ -17,14 +16,9 @@ export const SignIn = () => {
 
   useEffect(() => {
     if (data && isSuccess) {
-      const { user } = data.userDetails;
-      sessionStorage.setItem("access_token", data.userDetails.token);
-      sessionStorage.setItem(
-        "user_details",
-        JSON.stringify(data.userDetails.user)
-      );
+      const { user, token } = data.userDetails;
 
-      dispatch(setUserDetails({ user }));
+      dispatch(setUserDetails({ user, token }));
 
       navigate("/dashboard/overview");
 
@@ -94,10 +88,11 @@ export const SignIn = () => {
           <div className="mb-4">
             <PrimaryButton
               type="submit"
-              variant="outline"
+              variant="filled"
               name="Sign In"
               fullWidth
               radius="md"
+              loading={isLoading}
             />
           </div>
         </form>
