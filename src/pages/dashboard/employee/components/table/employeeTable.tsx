@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   ScrollArea,
@@ -19,16 +19,8 @@ import {
 } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 import { NameProfile } from "../../../../../components/nameProfile";
-import { useGetEmployeeQuery } from "../../../../../store/employee";
-
-export interface EmployeeData {
-  name: string;
-  department: string;
-  employee_id: string;
-  role: string;
-  status: string;
-  salary: string;
-}
+import { useGetAllEmployeeQuery } from "../../../../../store/employee";
+import { EmployeeData } from "../../../../../store/employee/interface";
 
 interface ThProps {
   children: React.ReactNode;
@@ -62,7 +54,13 @@ function Th({ children, reversed, sorted, onSort }: ThProps) {
 function filterData(data: EmployeeData[], search: string) {
   const query = search.toLowerCase().trim();
   return data.filter((item) =>
-    keys(data[0]).some((key) => item[key].toLowerCase().includes(query))
+    keys(item).some((key) => {
+      const value = item[key];
+      if (typeof value === "string") {
+        return value.toLowerCase().includes(query);
+      }
+      return false;
+    })
   );
 }
 
@@ -82,105 +80,73 @@ function sortData(
 
   return filterData(
     [...data].sort((a, b) => {
-      if (payload.reversed) {
-        return b[sortBy].localeCompare(a[sortBy]);
-      }
+      const valueA = a[sortBy];
+      const valueB = b[sortBy];
 
-      return a[sortBy].localeCompare(b[sortBy]);
+      if (payload.reversed) {
+        if (typeof valueB === "string" && typeof valueA === "string") {
+          return valueB.localeCompare(valueA);
+        }
+      } else {
+        if (typeof valueA === "string" && typeof valueB === "string") {
+          return valueA.localeCompare(valueB);
+        }
+      }
+      return 0;
     }),
     payload.search
   );
 }
 
-const data = [
-  {
-    role: "Manager",
-    name: "Athena Weissnat",
-    salary: "300000",
-    status: "full_time",
-    department: "Admin",
-    employee_id: "AB1230",
-  },
-
-  {
-    role: "QA",
-    name: "John Doe",
-    salary: "230000",
-    status: "part_time",
-    department: "Product",
-    employee_id: "AB1231",
-  },
-  {
-    role: "Backend Engineer",
-    name: "Jane Smith",
-    salary: "320000",
-    status: "intern",
-    department: "Engineering",
-    employee_id: "AB1232",
-  },
-  {
-    role: "Sales",
-    name: "Bob Johnson",
-    salary: "150000",
-    status: "contract",
-    department: "Produt",
-    employee_id: "AB1233",
-  },
-  {
-    role: "Frontend Engineer",
-    name: "Alice Williams",
-    salary: "340000",
-    status: "full_time",
-    department: "Engineering",
-    employee_id: "AB1234",
-  },
-  {
-    role: "Customer Success",
-    name: "Charlie Brown",
-    status: "part_time",
-    salary: "100000",
-    department: "Support",
-    employee_id: "AB125",
-  },
-];
-
 export const EmployeeTable = () => {
+  const { data: allEmployee } = useGetAllEmployeeQuery();
+  const data = allEmployee ? allEmployee.data : [];
+
   const [search, setSearch] = useState("");
   const [sortedData, setSortedData] = useState(data);
   const [sortBy, setSortBy] = useState<keyof EmployeeData | null>(null);
   const [reverseSortDirection, setReverseSortDirection] = useState(false);
 
-  const { data: allEmployee } = useGetEmployeeQuery();
+  useEffect(() => {
+    setSortedData(data);
+  }, [data]);
 
   const setSorting = (field: keyof EmployeeData) => {
-    const reversed = field === sortBy ? !reverseSortDirection : false;
-    setReverseSortDirection(reversed);
-    setSortBy(field);
-    setSortedData(sortData(data, { sortBy: field, reversed, search }));
+    if (data) {
+      const reversed = field === sortBy ? !reverseSortDirection : false;
+      setReverseSortDirection(reversed);
+      setSortBy(field);
+      setSortedData(sortData(data, { sortBy: field, reversed, search }));
+    }
   };
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.currentTarget;
     setSearch(value);
-    setSortedData(
-      sortData(data, { sortBy, reversed: reverseSortDirection, search: value })
-    );
+    if (data) {
+      setSortedData(
+        sortData(data, {
+          sortBy,
+          reversed: reverseSortDirection,
+          search: value,
+        })
+      );
+    }
   };
 
   const navigate = useNavigate();
 
   const rows = sortedData.map((row, i) => (
     <Table.Tr
-      onClick={() =>
-        navigate(`/dashboard/employee/${row.employee_id}`, { state: row })
-      }
+      onClick={() => navigate(`/dashboard/employee/${row.id}`, { state: row })}
       key={i}
       className="cursor-pointer">
       <Table.Td className="flex items-center gap-3">
-        <NameProfile name={row.name} />
-        <span>{row.name}</span>
+        <NameProfile
+          name={`${row?.user?.first_name} ${row?.user?.last_name}`}
+        />
+        <span>{`${row?.user?.first_name} ${row?.user?.last_name}`}</span>
       </Table.Td>
-      {/* <Table.Td>{row.employee_id}</Table.Td> */}
       <Table.Td>{Number(row.salary).toLocaleString()}</Table.Td>
       <Table.Td>
         {row.status === "full_time" ? (
@@ -201,7 +167,7 @@ export const EmployeeTable = () => {
           </Badge>
         )}
       </Table.Td>
-      <Table.Td>{row.department}</Table.Td>
+      <Table.Td className="capitalize">{row.department}</Table.Td>
       <Table.Td>{row.role}</Table.Td>
     </Table.Tr>
   ));
@@ -240,12 +206,6 @@ export const EmployeeTable = () => {
               onSort={() => setSorting("name")}>
               Name
             </Th>
-            {/* <Th
-              sorted={sortBy === "employee_id"}
-              reversed={reverseSortDirection}
-              onSort={() => setSorting("employee_id")}>
-              Employee ID
-            </Th> */}
             <Th
               sorted={sortBy === "salary"}
               reversed={reverseSortDirection}
@@ -277,7 +237,7 @@ export const EmployeeTable = () => {
             rows
           ) : (
             <Table.Tr>
-              <Table.Td colSpan={Object.keys(data[0]).length}>
+              <Table.Td colSpan={5}>
                 <Text fw={500} ta="center">
                   Nothing found
                 </Text>

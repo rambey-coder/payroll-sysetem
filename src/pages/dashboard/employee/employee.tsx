@@ -12,31 +12,33 @@ import {
 import { ButtonWithIcon } from "../../../components";
 import { EmployeeTable } from "./components/table/employeeTable";
 import { AddEmployee } from "./components/addEmployee/addEmployee";
+import { useGetAllEmployeeQuery } from "../../../store/employee";
 
 export const Employee = () => {
   const [setPageName] = useOutletContext<any>();
   const [opened, { open, close }] = useDisclosure(false);
+  const { data } = useGetAllEmployeeQuery();
 
   const statData = [
     {
       title: "Total Employee",
       icon: IconUsersPlus,
-      value: "13,456",
+      value: data?.data.length,
     },
     {
       title: "Present",
       icon: IconUserCheck,
-      value: "745",
+      value: "0",
     },
     {
       title: "Absent",
       icon: IconUserMinus,
-      value: "745",
+      value: "0",
     },
     {
       title: "Leave",
       icon: IconUserX,
-      value: "188",
+      value: "0",
     },
   ];
 

@@ -1,27 +1,36 @@
 import React, { useEffect, useState } from "react";
 import { Group, Paper, SimpleGrid, Text } from "@mantine/core";
 import { NameProfile } from "../../../../../../components/nameProfile";
-import { EmployeeData } from "../../table";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
+import { EmployeeData } from "../../../../../../store/employee/interface";
 import {
   IconChartLine,
   IconDatabase,
   IconHierarchy2,
 } from "@tabler/icons-react";
+import { useGetEmployeeQuery } from "../../../../../../store/employee";
 
 export const EmployeeStat = () => {
   const location = useLocation();
-  const [employeeDetails, setEmployeeDetails] = useState<EmployeeData>({
-    name: "",
-    department: "",
-    employee_id: "",
-    role: "",
-    status: "",
-  });
+  const { id } = useParams();
 
-  useEffect(() => {
-    if (location.state) setEmployeeDetails(location.state);
-  }, [location]);
+  const { data } = useGetEmployeeQuery(id);
+
+  const employeeDetails = data?.data;
+
+  console.log(data?.data);
+
+  // const [employeeDetails, setEmployeeDetails] = useState<EmployeeData>({
+  //   name: "",
+  //   department: "",
+  //   id: 0,
+  //   role: "",
+  //   status: "",
+  // });
+
+  // useEffect(() => {
+  //   if (location.state) setEmployeeDetails(location.state);
+  // }, [location]);
 
   const style = {
     // backgroundColor: background,
@@ -40,14 +49,16 @@ export const EmployeeStat = () => {
     <SimpleGrid cols={{ base: 1, xs: 2, md: 4 }}>
       <Paper bg={"#fefae0"} radius="md" p="md">
         <Group>
-          <NameProfile name={employeeDetails.name} />
+          <NameProfile
+            name={`${employeeDetails?.user?.first_name} ${employeeDetails?.user?.last_name}`}
+          />
 
           <div>
             <Text fw={700} size="xl">
-              {employeeDetails.name}
+              {`${employeeDetails?.user?.first_name} ${employeeDetails?.user?.last_name}`}
             </Text>
             <Text c="dimmed" size="xs" tt="uppercase" fw={700}>
-              {employeeDetails.role}
+              {employeeDetails?.role}
             </Text>
           </div>
         </Group>
@@ -72,7 +83,7 @@ export const EmployeeStat = () => {
               Employee ID
             </Text>
             <Text c="dimmed" size="xs" tt="uppercase" fw={700}>
-              {employeeDetails.employee_id}
+              {employeeDetails?.id}
             </Text>
           </div>
         </Group>
@@ -97,7 +108,7 @@ export const EmployeeStat = () => {
               Status
             </Text>
             <Text c="dimmed" size="xs" tt="uppercase" fw={700}>
-              {employeeDetails.status}
+              {employeeDetails?.status}
             </Text>
           </div>
         </Group>
@@ -122,7 +133,7 @@ export const EmployeeStat = () => {
               Department
             </Text>
             <Text c="dimmed" size="xs" tt="uppercase" fw={700}>
-              {employeeDetails.department}
+              {employeeDetails?.department}
             </Text>
           </div>
         </Group>

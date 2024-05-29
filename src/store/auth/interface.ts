@@ -35,3 +35,7 @@ export interface LoginResponse {
 export interface SignUpResponse {
   message: string;
 }
+
+export interface AllUserResponse {
+  data: IUser[];
+}

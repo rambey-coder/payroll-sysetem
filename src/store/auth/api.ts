@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { BaseDir } from "../../baseDir";
 import {
+  AllUserResponse,
   IUser,
   LoginPayload,
   LoginResponse,
@@ -30,13 +31,23 @@ export const authApi = createApi({
       invalidatesTags: ["Auth"],
     }),
     getProfile: builder.query<IUser, void>({
+      query: (id) => ({
+        url: `/user/${id}`,
+        method: "GET",
+      }),
+    }),
+    getAllUser: builder.query<AllUserResponse, void>({
       query: () => ({
-        url: "/user",
+        url: `/user`,
         method: "GET",
       }),
     }),
   }),
 });
 
-export const { useLoginMutation, useSignUpMutation, useGetProfileQuery } =
-  authApi;
+export const {
+  useLoginMutation,
+  useSignUpMutation,
+  useGetProfileQuery,
+  useGetAllUserQuery,
+} = authApi;

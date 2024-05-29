@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Modal } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import {
@@ -6,7 +6,13 @@ import {
   SelectOption,
   TxtInput,
 } from "../../../../../components";
-import { useAddEmployeeMutation } from "../../../../../store/employee";
+import {
+  useAddEmployeeMutation,
+  useGetAllEmployeeQuery,
+} from "../../../../../store/employee";
+import { useGetAllUserQuery } from "../../../../../store/auth";
+import { alert } from "../../../../../utils";
+import { departmentLists, statusList } from "./constants";
 
 interface Props {
   opened: boolean;
@@ -17,60 +23,35 @@ export const AddEmployee: React.FC<Props> = ({ opened, close }) => {
   const [addEmployee, { data, isError, isLoading, isSuccess }] =
     useAddEmployeeMutation();
 
-  console.log("err", isError, "load", isLoading, "succ", isSuccess, data);
+  const { data: allUser } = useGetAllUserQuery();
+  const { refetch } = useGetAllEmployeeQuery();
+
+  useEffect(() => {
+    if (isSuccess) {
+      alert.success("Employee Added Successfully");
+      refetch();
+      close();
+    }
+
+    if (isError) alert.error("An error Occured" || data?.message);
+  }, [isSuccess, isError, data]);
 
   const form = useForm({
     mode: "uncontrolled",
     initialValues: {
-      name: "",
+      userId: "",
       department: "",
       role: "",
       status: "",
       salary: "",
     },
-
-    validate: {
-      name: (value) => (value.length > 2 ? null : "Input a valid name"),
-    },
   });
 
-  const departmentLists = [
-    {
-      label: "Admin",
-      value: "admin",
-    },
-    {
-      label: "Sales",
-      value: "sales",
-    },
-    {
-      label: "Support",
-      value: "support",
-    },
-    {
-      label: "Engineering",
-      value: "Engineering",
-    },
-  ];
-
-  const statusList = [
-    {
-      label: "Full Time",
-      value: "full_time",
-    },
-    {
-      label: "Part Time",
-      value: "part_time",
-    },
-    {
-      label: "Contract",
-      value: "contract",
-    },
-    {
-      label: "Intern",
-      value: "intern",
-    },
-  ];
+  const transformedData =
+    allUser?.data.map((item) => ({
+      label: `${item.first_name} ${item.last_name}`,
+      value: item.id.toString(),
+    })) || [];
 
   return (
     <Modal opened={opened} onClose={close} centered title="Add Employee">
@@ -80,18 +61,25 @@ export const AddEmployee: React.FC<Props> = ({ opened, close }) => {
 
           const isValid = form.isValid();
 
-          if (isValid) addEmployee(values);
+          if (isValid) {
+            const payload = {
+              ...values,
+              salary: Number(values.salary),
+              status: values.status.toString(),
+            };
+
+            addEmployee(payload);
+          }
         })}>
         <div className="mb-3">
-          <TxtInput
-            label="Full Name"
-            type="text"
-            id="name"
-            name="name"
-            placeholder="John Doe"
+          <SelectOption
+            label="Empoyee"
+            name="userId"
+            placeholder="Select a empoyee"
             required
-            key={form.key("name")}
-            {...form.getInputProps("name")}
+            data={transformedData}
+            clearable={true}
+            onChange={(value) => form.setFieldValue("userId", value)}
           />
         </div>
         <div className="mb-3">
@@ -147,6 +135,7 @@ export const AddEmployee: React.FC<Props> = ({ opened, close }) => {
           name="Add Employee"
           type="submit"
           variant="outline"
+          loading={isLoading}
         />
       </form>
     </Modal>

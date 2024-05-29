@@ -17,31 +17,26 @@ import {
   IconArrowDownRight,
 } from "@tabler/icons-react";
 import { RecentPayrollHistory, WorkHourStat } from "./components";
-import { useSelector } from "react-redux";
-import { useGetProfileQuery } from "../../../store/auth";
 
 export const Dashboard = () => {
   const [setPageName] = useOutletContext<any>();
-  const { userDetails } = useSelector((state: any) => state.auth);
 
-  const { data: userInfo } = useGetProfileQuery();
-
-  console.log(userInfo);
+  const user = JSON.parse(sessionStorage.getItem("user_details") || "{}");
 
   const quickActionList = [
     {
       title: "Manage Employee",
-      link: "",
+      link: "/dashboard/employee",
       icon: IconUsers,
     },
     {
       title: "Update Profile",
-      link: " ",
+      link: " /dashboard/settings",
       icon: IconUserEdit,
     },
     {
       title: "Create Payroll",
-      link: "",
+      link: "/dashboard/payroll",
       icon: IconCalendarDollar,
     },
     {
@@ -108,7 +103,7 @@ export const Dashboard = () => {
         <div className="bg-[#271E3B] p-6 rounded-lg w-[100%] flex items-center justify-between ">
           <div>
             <h1 className="text-white text-2xl font-bold">
-              Good to see you, {userDetails?.first_name} 👋
+              Good to see you, {user?.first_name} 👋
             </h1>
             <p className="text-white my-4">How are you doing today?</p>
 
