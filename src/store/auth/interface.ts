@@ -30,6 +30,7 @@ interface UserDetails {
 
 export interface LoginResponse {
   userDetails: UserDetails;
+  message: string;
 }
 
 export interface SignUpResponse {

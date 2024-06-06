@@ -8,10 +8,11 @@ import {
   SignUpPayload,
   SignUpResponse,
 } from "./interface";
+import { axiosBaseQuery } from "../../utils/axiosQuery/axiosBaseQuery";
 
 export const authApi = createApi({
   reducerPath: "authApi",
-  baseQuery: fetchBaseQuery({ baseUrl: `${BaseDir.API_BASE_URL}` }),
+  baseQuery: axiosBaseQuery({ baseUrl: `${BaseDir.API_BASE_URL}` }),
   tagTypes: ["Auth"],
   endpoints: (builder) => ({
     login: builder.mutation<LoginResponse, LoginPayload>({

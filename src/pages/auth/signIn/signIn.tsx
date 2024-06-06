@@ -24,9 +24,7 @@ export const SignIn = () => {
 
       alert.success("Login Successful");
     }
-
-    if (isError) alert.error("An error occured");
-  }, [data, isError, isSuccess]);
+  }, [data, isSuccess]);
 
   const form = useForm({
     mode: "uncontrolled",

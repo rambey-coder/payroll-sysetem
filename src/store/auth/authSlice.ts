@@ -9,6 +9,8 @@ const authSlice = createSlice({
     setUserDetails: (state, action) => {
       state.userDetails = action.payload.user;
 
+      console.log("hi");
+
       sessionStorage.setItem("access_token", action.payload.token);
       sessionStorage.setItem(
         "user_details",
