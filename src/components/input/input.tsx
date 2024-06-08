@@ -16,6 +16,7 @@ export const TxtInput: React.FC<InputVariantProps> = ({
   type,
   name,
   id,
+  ...rest
 }) => (
   <TextInput
     label={label}
@@ -32,6 +33,7 @@ export const TxtInput: React.FC<InputVariantProps> = ({
     type={type}
     name={name}
     id={id}
+    {...rest}
   />
 );
 

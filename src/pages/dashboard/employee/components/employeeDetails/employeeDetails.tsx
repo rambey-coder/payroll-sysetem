@@ -13,6 +13,9 @@ import {
 import { SimpleGrid, Paper, Text } from "@mantine/core";
 import { AttendanceTable } from "./components";
 import { ButtonWithIcon, Tab } from "../../../../../components";
+import { ITab } from "../../../../../components/tab/interface";
+import { PersonalInfo } from "./components/personalInformation/personalInfo";
+import { EmploymentInfo } from "./components/employmentInfo/employmentInfo";
 
 export const EmployeeDetails = () => {
   const { id } = useParams<string>();
@@ -49,6 +52,38 @@ export const EmployeeDetails = () => {
       title: "Average Break Time",
       icon: IconCoffee,
       value: "188",
+    },
+  ];
+
+  const tabs: ITab[] = [
+    {
+      label: "Personal Information", //contatct, email add, home add, phone no.,  gendewr
+      value: "personal_info",
+      content: <PersonalInfo />,
+    },
+    {
+      label: "Employment Details", //role, position, department, employment type
+      value: "employment_details",
+      content: <EmploymentInfo />,
+    },
+    {
+      label: "Leave",
+      value: "leave",
+      content: <div>Third tab content</div>,
+    },
+    {
+      label: "Salary", //amount, payment date, bonus => being able to add allowances & deduction {allowance name, amount} & bonus 
+      value: "salary",
+      content: <div>Third tab content</div>,
+    },
+    {
+      label: "Attendance",
+      value: "attendance",
+      content: (
+        <div className="bg-white p-4 mt-8">
+          <AttendanceTable />
+        </div>
+      ),
     },
   ];
 
@@ -102,10 +137,8 @@ export const EmployeeDetails = () => {
         ))}
       </SimpleGrid>
 
-      <Tab defaultValue="Personal"/>
-
-      <div className="bg-white p-4 mt-8">
-        <AttendanceTable />
+      <div className="mt-7">
+        <Tab defaultValue="personal_info" tabs={tabs} />
       </div>
     </div>
   );

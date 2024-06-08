@@ -1,6 +1,6 @@
 export interface InputVariantProps {
   label: string;
-  placeholder: string;
+  placeholder?: string;
   value?: string;
   onChange?: (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -13,6 +13,7 @@ export interface InputVariantProps {
   type?: string;
   name?: string;
   id?: string;
+  [key: string]: any;
 }
 
 export interface ISelect {

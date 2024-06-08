@@ -1,49 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { Group, Paper, SimpleGrid, Text } from "@mantine/core";
 import { NameProfile } from "../../../../../../components/nameProfile";
-import { useLocation, useParams } from "react-router-dom";
-import { EmployeeData } from "../../../../../../store/employee/interface";
+import { useParams } from "react-router-dom";
 import {
   IconChartLine,
   IconDatabase,
   IconHierarchy2,
 } from "@tabler/icons-react";
 import { useGetEmployeeQuery } from "../../../../../../store/employee";
+import { useDispatch } from "react-redux";
+import { setEmployee } from "../../../../../../store/employee/employeeSlice";
 
 export const EmployeeStat = () => {
-  const location = useLocation();
   const { id } = useParams();
-
+  const dispatch = useDispatch();
   const { data } = useGetEmployeeQuery(id);
 
   const employeeDetails = data?.data;
 
-  console.log(data?.data);
-
-  // const [employeeDetails, setEmployeeDetails] = useState<EmployeeData>({
-  //   name: "",
-  //   department: "",
-  //   id: 0,
-  //   role: "",
-  //   status: "",
-  // });
-
-  // useEffect(() => {
-  //   if (location.state) setEmployeeDetails(location.state);
-  // }, [location]);
-
-  const style = {
-    // backgroundColor: background,
-    color: "#fff",
-    borderRadius: "50%",
-    width: "40px",
-    height: "40px",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    fontSize: "16px",
-    fontWeight: "bold",
-  };
+  useEffect(() => {
+    dispatch(setEmployee({ employeeDetails }));
+  }, [data]);
 
   return (
     <SimpleGrid cols={{ base: 1, xs: 2, md: 4 }}>
