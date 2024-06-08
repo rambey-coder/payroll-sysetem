@@ -8,6 +8,7 @@ export interface ButtonVariantProps {
   disabled?: boolean;
   loading?: boolean;
   type: "button" | "submit" | "reset";
+  // []
 }
 
 export interface ButtonWithIconProps extends ButtonVariantProps {
