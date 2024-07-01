@@ -6,6 +6,7 @@ import {
   Attendance,
   Dashboard,
   Employee,
+  Leave,
   Payroll,
   SignIn,
   SignUp,
@@ -27,6 +28,7 @@ export const MainRoute = () => {
           <Route path="payroll" element={<Payroll />} />
           <Route path="employee" element={<Employee />} />
           <Route path="employee/:id" element={<EmployeeDetails />} />
+          <Route path="leave" element={<Leave />} />
         </Route>
       </Routes>
     </ScrollToTop>

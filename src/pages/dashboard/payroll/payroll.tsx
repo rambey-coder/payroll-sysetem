@@ -8,17 +8,18 @@ import { Paper, SimpleGrid, Text } from "@mantine/core";
 import React, { useEffect } from "react";
 import { PayrollTable } from "./components";
 import { useOutletContext } from "react-router-dom";
+import { PrimaryButton } from "../../../components/button/button";
 
 export const Payroll = () => {
   const data = [
     {
-      title: "Drafts",
+      title: "Total Payment", //total payment
       icon: IconFileText,
       value: "$13,456",
     },
     { title: "Completed", icon: IconChecklist, value: "$4,145", diff: -13 },
     {
-      title: "Pending",
+      title: "Pending", //total deduction
       icon: IconLoader,
       value: "$7,745",
     },
@@ -37,6 +38,14 @@ export const Payroll = () => {
 
   return (
     <div>
+      <div className="flex justify-end mb-7">
+        <PrimaryButton
+          variant="filled"
+          name="Initiate Payment"
+          type="button"
+          radius="lg"
+        />
+      </div>
       <div className="">
         <SimpleGrid cols={{ base: 1, xs: 2, md: 4 }}>
           {data.map((stat) => (
