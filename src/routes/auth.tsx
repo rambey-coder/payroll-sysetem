@@ -6,7 +6,8 @@ import { SignIn } from "../pages/auth/signIn/signIn";
 export const Auth = () => {
   const [pageName, setPageName] = React.useState("");
 
-  const auth = sessionStorage.getItem("access_token");
+  // const auth = sessionStorage.getItem("access_token");
+  const auth = true;
   return auth ? (
     <Sidebar pageName={pageName}>
       <Outlet context={[setPageName]} />

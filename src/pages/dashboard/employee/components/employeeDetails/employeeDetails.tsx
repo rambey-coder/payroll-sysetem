@@ -16,6 +16,7 @@ import { ButtonWithIcon, Tab } from "../../../../../components";
 import { ITab } from "../../../../../components/tab/interface";
 import { PersonalInfo } from "./components/personalInformation/personalInfo";
 import { EmploymentInfo } from "./components/employmentInfo/employmentInfo";
+import { Leave } from "./components/leave/leave";
 
 export const EmployeeDetails = () => {
   const { id } = useParams<string>();
@@ -57,7 +58,7 @@ export const EmployeeDetails = () => {
 
   const tabs: ITab[] = [
     {
-      label: "Personal Information", //contatct, email add, home add, phone no.,  gendewr
+      label: "Personal Information", //contatct, email add, home add, phone no.,  gender
       value: "personal_info",
       content: <PersonalInfo />,
     },
@@ -69,10 +70,10 @@ export const EmployeeDetails = () => {
     {
       label: "Leave",
       value: "leave",
-      content: <div>Third tab content</div>,
+      content: <Leave />,
     },
     {
-      label: "Salary", //amount, payment date, bonus => being able to add allowances & deduction {allowance name, amount} & bonus 
+      label: "Salary", //amount, payment date, bonus => being able to add allowances & deduction {allowance name, amount} & bonus
       value: "salary",
       content: <div>Third tab content</div>,
     },
